@@ -73,6 +73,15 @@ h3 {
   color:#4286f4;
   animation: animatetop 6s;
 }
+.buttonSignUp {
+  background-color: #4286f4;
+  border: 1px solid black;
+  height: 30px;
+  border-radius: 10px;
+}
+.buttonSignUp:focus {
+  outline-color: #282C34;
+}
 .button {
   background-color: #4286f4;
   border: 1px solid black;

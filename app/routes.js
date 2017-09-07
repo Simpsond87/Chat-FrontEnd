@@ -18,6 +18,37 @@ export default function createRoutes() {
            .catch(errorLoading);
        },
      },
+
+     {
+      path: '/RoomList',
+      name: 'RoomList',
+      getComponent(nextState, comMod) {
+        import('containers/RoomList')
+          .then(loadModule(comMod))
+          .catch(errorLoading);
+      },
+    },
+
+    {
+     path: '/SignUpPage',
+     name: 'SignUpPage',
+     getComponent(nextState, comMod) {
+       import('containers/SignUpPage')
+         .then(loadModule(comMod))
+         .catch(errorLoading);
+     },
+   },
+
+    {
+     path: '/ChatRoom',
+     name: 'ChatRoom',
+     getComponent(nextState, comMod) {
+       import('containers/ChatRoom')
+         .then(loadModule(comMod))
+         .catch(errorLoading);
+     },
+   },
+
      {
       path: '*',
       name: 'notfound',

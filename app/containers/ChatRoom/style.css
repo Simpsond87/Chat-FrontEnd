@@ -1,0 +1,82 @@
+/* ChatRoom Styles */
+
+.container {
+  min-height:100vh;
+  background: #282C34;
+  font-family: 'Roboto', sans-serif;
+}
+@fontface {
+  font-family: 'Baloo Bhaijaan', cursive;
+  src: url("https://fonts.googleapis.com/css?family=Baloo+Bhaijaan" rel="stylesheet")
+}
+@fontface {
+  font-family: 'Roboto', sans-serif;
+  src: url("https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet")
+}
+h1 {
+  font-size: 50px;
+  font-family: 'Baloo Bhaijaan', cursive;
+  color:#f49e42;
+}
+h2 {
+  color: #4286f4;
+}
+h3 {
+  color: #dbdbdb;
+}
+.blue {
+  color: #4286f4;
+}
+.green {
+  color: #30a82a;
+}
+.orange {
+  color:#f49e42;
+}
+.faveChat {
+  float:left;
+}
+.title {
+  width:100%;
+  height: 100px;
+}
+.signOut {
+  float: right;
+  padding-top: 30px;
+  padding-right: 10px;
+}
+.chatWindow {
+  margin: 0 auto;
+  height: 700px;
+  width: 80%;
+  position: relative;
+}
+.chatBox {
+  height: 100%;
+  width:65%;
+  margin: 0 auto;
+  border: 1px solid #bdbdbd;
+  background-color: #3a404c;
+  padding: 10px;
+  float:left;
+  overflow-y: scroll;
+}
+.users {
+  background-color: #3a404c;
+  height: 700px;
+  width: 25%;
+  float: left;
+  padding: 10px;
+  overflow-y: scroll;
+  border: 1px solid #bdbdbd;
+  margin-top: 0;
+}
+.input {
+width: 66%;
+}
+.text {
+ width: 84%;
+}
+.send {
+ width: 15%;
+}

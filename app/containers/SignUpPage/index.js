@@ -1,6 +1,6 @@
 /*
  *
- * Home
+ * SignUpPage
  *
  */
 
@@ -10,9 +10,7 @@ import Helmet from 'react-helmet';
 import './style.css';
 import './styleM.css';
 
-import {Link} from 'react-router';
-
-export default class Home extends React.PureComponent {
+export default class SignUpPage extends React.PureComponent {
 
   constructor(){
     super();
@@ -26,13 +24,39 @@ export default class Home extends React.PureComponent {
     this.setState({
       username:event.target.value
     })
-  }
+  };
 
   handlePassword=(event)=> {
     this.setState({
       password:event.target.value
     })
-  }
+  };
+
+  signUp = () => {
+    let _this = this;
+    let data = new FormData();
+    data.append("username", this.state.username);
+    data.append("password", this.state.password);
+
+    fetch("http://localhost:8000/api/signUp", {
+      method:"POST",
+      body:data
+    })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(json){
+      if(json.error)
+      {
+          alert(json.error);
+      }
+      else if(json.success)
+      {
+        _this.signIn();
+        alert("Signed up successfully");
+      }
+    })
+  };
 
   signIn=()=> {
     let _this = this;
@@ -56,8 +80,6 @@ export default class Home extends React.PureComponent {
       {
         sessionStorage.setItem('token', json.token);
         _this.getUser(json.token);
-        alert("welcome back");
-
       }
     })
   }
@@ -89,16 +111,16 @@ export default class Home extends React.PureComponent {
           </div>
           <div className="loginBox">
 
-            <input className="button" type="submit" value="Sign In"  onClick={this.showInput} />
+            <input className="buttonSignUp" type="submit" value="Sign Up"/>
 
-            <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
+            <input type="text" ref="username" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
 
-            <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
+            <input type="text" ref="password" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
 
-            <a className="signUpLink" href="/SignUpPage">New to FaveChat? Sign Up</a>
+            <a className="signUpLink" ref="signUp" style={{display:'none'}} href="/SignUpPage">New to FaveChat? Sign Up</a>
             <br/><br/>
 
-            <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signIn} />
+            <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signUp} />
           </div>
         </div>
       </div>
@@ -106,6 +128,6 @@ export default class Home extends React.PureComponent {
   }
 }
 
-Home.contextTypes = {
+SignUpPage.contextTypes = {
   router: React.PropTypes.object
 };
