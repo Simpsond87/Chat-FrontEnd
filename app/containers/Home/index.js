@@ -7,6 +7,9 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
+import FaExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle';
+import FaThumbsOUp from 'react-icons/lib/fa/thumbs-o-up';
+
 import './style.css';
 import './styleM.css';
 
@@ -18,7 +21,10 @@ export default class Home extends React.PureComponent {
     super();
     this.state = {
       username:"",
-      password:""
+      password:"",
+      showAlertMissingField:false,
+      showAlertInvalidCredentials: false,
+      showLoginBox: true
     }
   };
 
@@ -48,18 +54,31 @@ export default class Home extends React.PureComponent {
       return response.json();
     })
     .then(function(json){
-      if(json.error)
+      if(json.error === 'Missing field')
       {
-          alert(json.error);
+        _this.setState({
+          showAlertMissingField:true
+        })
+      }
+      else if(json.error === 'Invalid Credentials')
+      {
+        _this.setState({
+          showAlertInvalidCredentials:true
+        })
       }
       else if(json.token)
       {
         sessionStorage.setItem('token', json.token);
         _this.getUser(json.token);
-        alert("welcome back");
-
+        _this.setState({
+          showAlertSignedIn:true
+        })
       }
     })
+  }
+
+  goToRoomList = () => {
+    this.context.router.push("/RoomList");
   }
 
   getUser = (token) => {
@@ -73,7 +92,88 @@ export default class Home extends React.PureComponent {
     })
     .then(function(json){
       sessionStorage.setItem('user', JSON.stringify(json.user));
-      _this.context.router.push("/RoomList");
+    })
+  }
+
+  renderAlertMissingField =() => {
+    if(this.state.showAlertMissingField === true){
+      this.setState({
+        showLoginBox: false
+      })
+      return(
+        <div className="alertBox">
+          <br/>
+          <span>Please enter both your username and password.</span>
+          <br/>
+          <FaExclamationTriangle className="iconTriangle"/>
+          <input className="okButton" type="button" value="OK" onClick={this.hideAlert}/>
+        </div>
+      )
+    }
+  }
+
+  renderAlertInvalidCredentials =() => {
+    if(this.state.showAlertInvalidCredentials === true){
+      this.setState({
+        showLoginBox: false
+      })
+      return(
+        <div className="alertBox">
+          <br/>
+          <span>Please enter a valid username and password.</span>
+          <br/>
+          <FaExclamationTriangle className="iconTriangle"/>
+          <input className="okButton" type="button" value="OK" onClick={this.hideAlert}/>
+        </div>
+      )
+    }
+  }
+
+  renderAlertSignedIn =() => {
+    if(this.state.showAlertSignedIn === true){
+      this.setState({
+        showLoginBox: false
+      })
+      return(
+        <div className="alertBox">
+          <br/>
+          <span>You have successfully signed in!</span>
+          <br/>
+          <FaThumbsOUp className="iconThumbs"/>
+          <input className="okButton" type="button" value="OK" onClick={this.goToRoomList}/>
+        </div>
+      )
+    }
+  }
+
+  renderLoginBox =() => {
+    if(this.state.showLoginBox === true){
+      return(
+        <div className="loginBox">
+
+          <input className="button" type="submit" value="Sign In"  onClick={this.showInput} />
+
+          <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
+
+          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
+
+          <a className="signUpLink" href="/SignUpPage">New to FaveChat? Sign Up</a>
+          <br/><br/>
+
+          <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signIn} />
+        </div>
+      )
+    }
+  }
+
+  hideAlert = () => {
+    this.setState({
+      username: "",
+      password: "",
+      showAlertMissingField:false,
+      showAlertInvalidCredentials: false,
+      showAlertSignedIn: false,
+      showLoginBox: true
     })
   }
 
@@ -82,24 +182,17 @@ export default class Home extends React.PureComponent {
       <div className="container">
         <Helmet title="Home" meta={[ { name: 'description', content: 'Description of Home' }]}/>
         <div className="smallContainer">
+
           <div className="welcomeBox">
             <div className="title"><h2>Welcome to</h2></div>
             <div className="title"><h1>FaveChat<span className="exclamation">!</span></h1></div>
             <div className="title"><h3>Find Your Favorite Chat Room</h3></div><br/>
           </div>
-          <div className="loginBox">
 
-            <input className="button" type="submit" value="Sign In"  onClick={this.showInput} />
-
-            <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
-
-            <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
-
-            <a className="signUpLink" href="/SignUpPage">New to FaveChat? Sign Up</a>
-            <br/><br/>
-
-            <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signIn} />
-          </div>
+          {this.renderLoginBox()}
+          {this.renderAlertMissingField()}
+          {this.renderAlertInvalidCredentials()}
+          {this.renderAlertSignedIn()}
         </div>
       </div>
     );

@@ -7,6 +7,9 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 
+import FaExclamationTriangle from 'react-icons/lib/fa/exclamation-triangle';
+import FaThumbsOUp from 'react-icons/lib/fa/thumbs-o-up';
+
 import './style.css';
 import './styleM.css';
 
@@ -16,7 +19,11 @@ export default class SignUpPage extends React.PureComponent {
     super();
     this.state = {
       username:"",
-      password:""
+      password:"",
+      showAlertUsernameUnavailable: false,
+      showAlertMissingField: false,
+      showAlertSignedUp: false,
+      showLoginBox: true
     }
   };
 
@@ -46,14 +53,23 @@ export default class SignUpPage extends React.PureComponent {
       return response.json();
     })
     .then(function(json){
-      if(json.error)
+      if(json.error === 'Missing field')
       {
-          alert(json.error);
+        _this.setState({
+          showAlertMissingField: true
+        })
+      }
+      else if(json.error === 'Username Unavailable')
+      {
+        _this.setState({
+          showAlertUsernameUnavailable: true
+        })
       }
       else if(json.success)
       {
-        _this.signIn();
-        alert("Signed up successfully");
+        _this.setState({
+          showAlertSignedUp: true
+        })
       }
     })
   };
@@ -72,11 +88,7 @@ export default class SignUpPage extends React.PureComponent {
       return response.json();
     })
     .then(function(json){
-      if(json.error)
-      {
-          alert(json.error);
-      }
-      else if(json.token)
+      if(json.token)
       {
         sessionStorage.setItem('token', json.token);
         _this.getUser(json.token);
@@ -99,6 +111,90 @@ export default class SignUpPage extends React.PureComponent {
     })
   }
 
+  renderLoginBox = () => {
+    if(this.state.showLoginBox === true)
+    {
+      return (
+        <div className="loginBox">
+
+          <input className="buttonSignUp" type="submit" value="Sign Up"/>
+
+          <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
+
+          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
+          <br/><br/><br/>
+
+          <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signUp} />
+        </div>
+      )
+    }
+  }
+
+  renderAlertSignedUp = () => {
+    if(this.state.showAlertSignedUp === true)
+    {
+      this.setState({
+        showLoginBox: false
+      })
+      return (
+        <div className="alertBox">
+          <br/>
+          <span>You have successfully signed up!</span>
+          <br/>
+          <FaThumbsOUp className="iconThumbs"/>
+          <input className="okButton" type="button" value="OK" onClick={this.signIn}/>
+        </div>
+      )
+    }
+  }
+  renderAlertMissingField = () => {
+    if(this.state.showAlertMissingField === true)
+    {
+      this.setState({
+        showLoginBox: false
+      })
+      return (
+        <div className="alertBox">
+          <br/>
+          <span>Please enter both username and password.</span>
+          <br/><br/>
+          <FaExclamationTriangle className="iconTriangle"/>
+          <input className="okButton" type="button" value="OK" onClick={this.hideAlert}/>
+        </div>
+      )
+    }
+  }
+
+  renderAlertUsernameUnavailable = () => {
+    if(this.state.showAlertUsernameUnavailable === true)
+    {
+      this.setState({
+        showLoginBox: false
+      })
+      return (
+        <div className="alertBox">
+          <br/>
+          <span>Sorry, that username is unavailable.</span>
+          <br/><br/>
+          <FaExclamationTriangle className="iconTriangle"/>
+          <input className="okButton" type="button" value="OK" onClick={this.hideAlert}/>
+        </div>
+      )
+    }
+  }
+
+  hideAlert = () => {
+    this.setState({
+      username: "",
+      password: "",
+      showAlertMissingField:false,
+      showAlertInvalidCredentials: false,
+      showAlertUsernameUnavailable: false,
+      showAlertSignedUp: false,
+      showLoginBox: true
+    })
+  }
+
   render() {
     return (
       <div className="container">
@@ -109,19 +205,11 @@ export default class SignUpPage extends React.PureComponent {
             <div className="title"><h1>FaveChat<span className="exclamation">!</span></h1></div>
             <div className="title"><h3>Find Your Favorite Chat Room</h3></div><br/>
           </div>
-          <div className="loginBox">
+          {this.renderLoginBox()}
+          {this.renderAlertSignedUp()}
+          {this.renderAlertMissingField()}
+          {this.renderAlertUsernameUnavailable()}
 
-            <input className="buttonSignUp" type="submit" value="Sign Up"/>
-
-            <input type="text" ref="username" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
-
-            <input type="text" ref="password" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
-
-            <a className="signUpLink" ref="signUp" style={{display:'none'}} href="/SignUpPage">New to FaveChat? Sign Up</a>
-            <br/><br/>
-
-            <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signUp} />
-          </div>
         </div>
       </div>
     );
