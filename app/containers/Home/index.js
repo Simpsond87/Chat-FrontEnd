@@ -40,6 +40,14 @@ export default class Home extends React.PureComponent {
     })
   }
 
+  handleEnter = (event) => {
+    //console.log(event.keyCode);
+    if(event.keyCode === 13)
+    {
+        this.signIn();
+    }
+  };
+
   signIn=()=> {
     let _this = this;
     let data = new FormData();
@@ -153,9 +161,9 @@ export default class Home extends React.PureComponent {
 
           <input className="button" type="submit" value="Sign In"  onClick={this.showInput} />
 
-          <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
+          <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} onKeyDown={this.handleEnter} />
 
-          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
+          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} onKeyDown={this.handleEnter} />
 
           <a className="signUpLink" href="/SignUpPage">New to FaveChat? Sign Up</a>
           <br/><br/>

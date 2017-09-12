@@ -39,6 +39,14 @@ export default class SignUpPage extends React.PureComponent {
     })
   };
 
+  handleEnter = (event) => {
+    //console.log(event.keyCode);
+    if(event.keyCode === 13)
+    {
+        this.signUp();
+    }
+  };
+
   signUp = () => {
     let _this = this;
     let data = new FormData();
@@ -119,9 +127,9 @@ export default class SignUpPage extends React.PureComponent {
 
           <input className="buttonSignUp" type="submit" value="Sign Up"/>
 
-          <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} />
+          <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} onKeyDown={this.handleEnter} />
 
-          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} />
+          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} onKeyDown={this.handleEnter}/>
           <br/><br/><br/>
 
           <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signUp} />
@@ -157,7 +165,7 @@ export default class SignUpPage extends React.PureComponent {
         <div className="alertBox">
           <br/>
           <span>Please enter both username and password.</span>
-          <br/><br/>
+          <br/>
           <FaExclamationTriangle className="iconTriangle"/>
           <input className="okButton" type="button" value="OK" onClick={this.hideAlert}/>
         </div>
@@ -175,7 +183,7 @@ export default class SignUpPage extends React.PureComponent {
         <div className="alertBox">
           <br/>
           <span>Sorry, that username is unavailable.</span>
-          <br/><br/>
+          <br/>
           <FaExclamationTriangle className="iconTriangle"/>
           <input className="okButton" type="button" value="OK" onClick={this.hideAlert}/>
         </div>
