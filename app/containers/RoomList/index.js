@@ -22,7 +22,7 @@ export default class RoomList extends React.PureComponent {
   render() {
     return (
       <div className="container">
-        <Helmet title="RoomList" meta={[ { name: 'description', content: 'Description of RoomList' }]}/>
+        <Helmet title="RoomList" meta={[ { name: 'description', content: 'FaveChat RoomList' }]}/>
 
         <div className="welcomeBoxUser">
           <h1 className="faveChat">FaveChat<span className="blue">!</span></h1>
@@ -32,14 +32,14 @@ export default class RoomList extends React.PureComponent {
         <div className="roomListBox">
           <div className="roomListHeader"><h1 className="blue">Room List</h1></div>
           <div>
-            <a href="/ChatRoom"><h2 className="green">General</h2></a>
-            <a href="/ChatRoom"><h2 className="green">Philosophy</h2></a>
-            <a href="/ChatRoom"><h2 className="green">Science</h2></a>
-            <a href="/ChatRoom"><h2 className="green">Games</h2></a>
-            <a href="/ChatRoom"><h2 className="green">Computers</h2></a>
-            <a href="/ChatRoom"><h2 className="green">Literature</h2></a>
-            <a href="/ChatRoom"><h2 className="green">Health</h2></a>
-            <a href="/ChatRoom"><h2 className="green">Students</h2></a>
+            <a href="/ChatRoom/1"><h2 className="green">General</h2></a>
+            <a href="/ChatRoom/2"><h2 className="green">Philosophy</h2></a>
+            <a href="/ChatRoom/3"><h2 className="green">Science</h2></a>
+            <a href="/ChatRoom/4"><h2 className="green">Games</h2></a>
+            <a href="/ChatRoom/5"><h2 className="green">Computers</h2></a>
+            <a href="/ChatRoom/6"><h2 className="green">Literature</h2></a>
+            <a href="/ChatRoom/7"><h2 className="green">Health</h2></a>
+            <a href="/ChatRoom/8"><h2 className="green">Students</h2></a>
           </div>
         </div>
       </div>

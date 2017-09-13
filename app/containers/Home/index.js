@@ -188,7 +188,7 @@ export default class Home extends React.PureComponent {
   render() {
     return (
       <div className="container">
-        <Helmet title="Home" meta={[ { name: 'description', content: 'Description of Home' }]}/>
+        <Helmet title="FaveChat" meta={[ { name: 'description', content: 'FaveChat | Home' }]}/>
         <div className="smallContainer">
 
           <div className="welcomeBox">

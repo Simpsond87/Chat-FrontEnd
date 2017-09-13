@@ -40,7 +40,7 @@ export default function createRoutes() {
    },
 
     {
-     path: '/ChatRoom',
+     path: '/ChatRoom/:id',
      name: 'ChatRoom',
      getComponent(nextState, comMod) {
        import('containers/ChatRoom')

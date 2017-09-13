@@ -206,7 +206,7 @@ export default class SignUpPage extends React.PureComponent {
   render() {
     return (
       <div className="container">
-        <Helmet title="Home" meta={[ { name: 'description', content: 'Description of Home' }]}/>
+        <Helmet title="Sign Up" meta={[ { name: 'description', content: 'FaveChat | Sign Up' }]}/>
         <div className="smallContainer">
           <div className="welcomeBox">
             <div className="title"><h2>Welcome to</h2></div>
