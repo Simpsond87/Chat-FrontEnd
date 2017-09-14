@@ -25,7 +25,8 @@ export default class ChatRoom extends React.PureComponent {
       token: sessionStorage.getItem('token'),
       username: JSON.parse(sessionStorage.getItem('user')),
       messages: [],
-      value: ''
+      value: '',
+      title: "Chat Room"
     }
     this.sendMessage = this.sendMessage.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -35,6 +36,7 @@ export default class ChatRoom extends React.PureComponent {
       this.channel=pusher.subscribe('room_'+this.props.params.id);
       this.channel.bind('send-message', this.updateChat);
       this.getMessage();
+      this.setTitle();
     }
 
     updateChat = (event) => {
@@ -48,6 +50,58 @@ export default class ChatRoom extends React.PureComponent {
 
     handleChange(event) {
         this.setState({value: event.target.value});
+    }
+
+    handleEnter = (event) => {
+      if(event.keyCode === 13)
+      {
+          this.sendMessage();
+      }
+    };
+
+    setTitle = () => {
+      switch(this.props.params.id) {
+    case '1':
+        this.setState({
+          title: "General Chat"
+        })
+        break;
+    case '2':
+        this.setState({
+          title: "Philosophy Chat"
+        })
+        break;
+    case '3':
+        this.setState({
+          title: "Science Chat"
+        })
+        break;
+    case '4':
+        this.setState({
+          title: "Games Chat"
+        })
+        break;
+    case '5':
+        this.setState({
+          title: "Computers Chat"
+        })
+        break;
+    case '6':
+        this.setState({
+          title: "Literature Chat"
+        })
+        break;
+    case '7':
+        this.setState({
+          title: "Health Chat"
+        })
+        break;
+    case '8':
+        this.setState({
+          title: "Students Chat"
+        })
+        break;
+}
     }
 
     sendMessage() {
@@ -69,6 +123,9 @@ export default class ChatRoom extends React.PureComponent {
         {
           alert(json.error);
         }
+      })
+      this.setState({
+        value: ''
       })
       this.forceUpdate();
     }
@@ -99,6 +156,7 @@ export default class ChatRoom extends React.PureComponent {
           </div>
 
           <div className="chatWindow">
+            <h2>{this.state.title}</h2>
             <div  className="chatBox">
 
               {this.state.messages.map((message, index)=>(
@@ -112,7 +170,7 @@ export default class ChatRoom extends React.PureComponent {
               <div><h3 className="green">user1</h3></div>
             </div>
             <div className="input"  >
-              <input type="text" className="text" name="message" value={this.state.value} placeholder="Enter message here" onChange={this.handleChange}/>
+              <input type="text" className="text" name="message" value={this.state.value} placeholder="Enter message here" onChange={this.handleChange} onKeyDown={this.handleEnter}/>
               <input type="submit" className="send" name="send" value="Send" onClick={this.sendMessage}/>
             </div>
           </div>
