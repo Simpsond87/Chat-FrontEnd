@@ -9,11 +9,6 @@ import Helmet from 'react-helmet';
 
 import Pusher from 'pusher-js';
 
-var pusher = new Pusher('224475fc3b60138f89d1', {
-      cluster: 'us2',
-      encrypted: false
-    });
-
 import './style.css';
 import './styleM.css';
 
@@ -28,13 +23,23 @@ export default class ChatRoom extends React.PureComponent {
       value: '',
       title: "Chat Room"
     }
-    this.sendMessage = this.sendMessage.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+
+    this.pusher = new Pusher('224475fc3b60138f89d1', {
+          cluster: 'us2',
+          authEndpoint: 'http://localhost:8000/api/presenceAuth',
+          auth: {
+            headers: {
+              'Authorization': 'Bearer ' + this.state.token
+            }
+          },
+          encrypted: false
+        });
   }
 
     componentWillMount() {
-      this.channel=pusher.subscribe('room_'+this.props.params.id);
+      this.channel=this.pusher.subscribe('presenceRoom_' + this.props.params.id);
       this.channel.bind('send-message', this.updateChat);
+      console.log(this.channel.members);
       this.getMessage();
       this.setTitle();
     }
@@ -48,7 +53,7 @@ export default class ChatRoom extends React.PureComponent {
       this.forceUpdate();
     }
 
-    handleChange(event) {
+    handleChange = (event) => {
         this.setState({value: event.target.value});
     }
 
@@ -104,7 +109,7 @@ export default class ChatRoom extends React.PureComponent {
 }
     }
 
-    sendMessage() {
+    sendMessage = () => {
       let _this = this;
       let data = new FormData();
       data.append('message', this.state.value);
