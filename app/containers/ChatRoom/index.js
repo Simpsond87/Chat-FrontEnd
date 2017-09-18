@@ -9,6 +9,8 @@ import Helmet from 'react-helmet';
 
 import Pusher from 'pusher-js';
 
+import FaHandPeaceO from 'react-icons/lib/fa/hand-peace-o';
+
 import './style.css';
 import './styleM.css';
 
@@ -21,7 +23,10 @@ export default class ChatRoom extends React.PureComponent {
       username: JSON.parse(sessionStorage.getItem('user')),
       messages: [],
       value: '',
-      title: "Chat Room"
+      title: "Chat Room",
+      users: [],
+      interval: "",
+      showAlertSignedOut: false
     }
 
     this.pusher = new Pusher('224475fc3b60138f89d1', {
@@ -39,9 +44,23 @@ export default class ChatRoom extends React.PureComponent {
     componentWillMount() {
       this.channel=this.pusher.subscribe('presenceRoom_' + this.props.params.id);
       this.channel.bind('send-message', this.updateChat);
-      console.log(this.channel.members);
       this.getMessage();
       this.setTitle();
+
+
+    }
+
+    componentDidMount() {
+      let _this = this;
+      let interval = setInterval(function(){_this.getOnline();}, 30000);
+      this.setState({
+        interval: interval
+      })
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.state.interval);
+      //this.leaveRoom();
     }
 
     updateChat = (event) => {
@@ -136,8 +155,10 @@ export default class ChatRoom extends React.PureComponent {
     }
 
     getMessage = () => {
+      let _this = this;
     fetch('http://localhost:8000/api/getMessages/'+this.props.params.id, {
-      method:'GET'
+      method:'GET',
+      headers: {'Authorization': 'Bearer ' + this.state.token}
     })
     .then(function(response) {
       return response.json();
@@ -146,18 +167,77 @@ export default class ChatRoom extends React.PureComponent {
       this.setState({
         messages: json.messages
       })
+      _this.getOnline();
     }.bind(this))
-
   };
+
+  getOnline = () => {
+    fetch('http://localhost:8000/api/getOnline/'+this.props.params.id, {
+      method: 'GET'
+    })
+    .then(function(response){
+      return response.json();
+    })
+    .then(function(json) {
+      this.setState({
+        users: json.users
+      })
+    }.bind(this))
+  }
+
+  signOut = () => {
+    let _this = this;
+    fetch('http://localhost:8000/api/signOut', {
+      method: 'GET',
+      headers: {'Authorization': 'Bearer ' + this.state.token}
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(json) {
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('user');
+      this.setState({
+        showAlertSignedOut: true
+      })
+      _this.context.router.push('/');
+    })
+  }
+
+  leaveRoom = () => {
+    fetch('http://localhost:8000/api/leaveRoom', {
+      method: 'GET',
+      headers: {'Authorization': 'Bearer ' + this.state.token}
+    })
+  }
+
+  renderAlertSignedOut = () => {
+    if(this.state.showAlertSignedOut === true){
+      return(
+        <div className="alertBox">
+          <br/>
+          <span>Goodbye!</span>
+          <br/>
+          <FaHandPeaceO className="iconHand"/>
+        </div>
+      )
+    }
+  }
 
   render() {
       return (
         <div className="container">
           <Helmet title="FaveChat | Chat Room" meta={[ { name: 'description', content: 'Description of ChatRoom' }]}/>
 
+          {this.renderAlertSignedOut()}
           <div className="title">
             <h1 className="faveChat">FaveChat<span className="blue">!</span></h1>
-            <span className="signOut"><h2 className="green">{this.state.username.username} <a href="/" className="blue">Sign Out</a></h2></span>
+            <span className="signOut">
+              <h2 className="green">
+                {this.state.username.username}
+                <a href="#" onClick={this.signOut} className="blue">Sign Out</a>
+              </h2>
+            </span>
           </div>
 
           <div className="chatWindow">
@@ -172,7 +252,11 @@ export default class ChatRoom extends React.PureComponent {
             <div className="users">
               <h2>Users</h2>
               <br/>
-              <div><h3 className="green">user1</h3></div>
+              <div>
+                {this.state.users.map((user, index) => (
+                  <h3 className="green">{user.username}</h3>
+                ))}
+              </div>
             </div>
             <div className="input"  >
               <input type="text" className="text" name="message" value={this.state.value} placeholder="Enter message here" onChange={this.handleChange} onKeyDown={this.handleEnter}/>

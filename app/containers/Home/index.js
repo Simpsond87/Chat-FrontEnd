@@ -24,6 +24,7 @@ export default class Home extends React.PureComponent {
       password:"",
       showAlertMissingField:false,
       showAlertInvalidCredentials: false,
+      showAlertSignedIn: false,
       showLoginBox: true
     }
   };

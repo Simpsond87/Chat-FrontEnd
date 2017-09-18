@@ -33,8 +33,20 @@ h3 {
 .orange {
   color:#f49e42;
 }
+.alertBox {
+  position:absolute;
+  width: 268.88px;
+  height: 180px;
+  background-color: #4286f4;
+  -moz-box-shadow:    inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow:         inset 0 0 10px #000000;
+  padding: 10px;
+  text-align: center;
+}
 .faveChat {
   float:left;
+  margin-left: 15px;
 }
 .title {
   width:100%;
@@ -44,6 +56,7 @@ h3 {
   float: right;
   padding-top: 30px;
   padding-right: 10px;
+  margin-right: 15px;
 }
 .chatWindow {
   margin: 0 auto;
