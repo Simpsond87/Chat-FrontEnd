@@ -129,7 +129,7 @@ export default class SignUpPage extends React.PureComponent {
 
           <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} onKeyDown={this.handleEnter} />
 
-          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} onKeyDown={this.handleEnter}/>
+          <input type="password" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} onKeyDown={this.handleEnter}/>
           <br/><br/><br/>
 
           <input type="button" ref="go" className="goButton" name="go" value="GO!" onClick={this.signUp} />

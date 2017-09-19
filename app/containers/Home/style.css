@@ -36,7 +36,9 @@ h3 {
   box-shadow:         inset 0 0 10px #000000;
   padding: 10px;
   text-align: center;
+  animation: fadeIn 3s;
 }
+
 .okButton {
   background-color: #30a82a;
   border: 1px solid black;
@@ -108,6 +110,15 @@ h3 {
 .signUpLink {
   color:#4286f4;
   animation: animatetop 6s;
+}
+.buttonSignIn {
+  background-color: #4286f4;
+  border: 1px solid black;
+  height: 30px;
+  border-radius: 10px;
+}
+.buttonSignIn:focus {
+  outline-color: #282C34;
 }
 .button {
   background-color: #4286f4;

@@ -160,11 +160,11 @@ export default class Home extends React.PureComponent {
       return(
         <div className="loginBox">
 
-          <input className="button" type="submit" value="Sign In"  onClick={this.showInput} />
+          <input className="buttonSignIn" type="submit" value="Sign In"  onClick={this.showInput} />
 
           <input type="text" className="input1" name="username" placeholder="Username" onChange={this.handleUsername} onKeyDown={this.handleEnter} />
 
-          <input type="text" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} onKeyDown={this.handleEnter} />
+          <input type="password" className="input2" name="password" placeholder="Password" onChange={this.handlePassword} onKeyDown={this.handleEnter} />
 
           <a className="signUpLink" href="/SignUpPage">New to FaveChat? Sign Up</a>
           <br/><br/>

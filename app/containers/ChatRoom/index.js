@@ -197,10 +197,9 @@ export default class ChatRoom extends React.PureComponent {
     .then(function(json) {
       sessionStorage.removeItem('token');
       sessionStorage.removeItem('user');
-      this.setState({
+      _this.setState({
         showAlertSignedOut: true
       })
-      _this.context.router.push('/');
     })
   }
 
@@ -219,9 +218,17 @@ export default class ChatRoom extends React.PureComponent {
           <span>Goodbye!</span>
           <br/>
           <FaHandPeaceO className="iconHand"/>
+          <input className="okButton" type="button" value="OK" onClick={this.hideAlert}/>
         </div>
       )
     }
+  }
+
+  hideAlert = () => {
+    this.setState({
+      showAlertSignedOut: false
+    })
+    this.context.router.push('/');
   }
 
   render() {
@@ -230,12 +237,13 @@ export default class ChatRoom extends React.PureComponent {
           <Helmet title="FaveChat | Chat Room" meta={[ { name: 'description', content: 'Description of ChatRoom' }]}/>
 
           {this.renderAlertSignedOut()}
+
           <div className="title">
             <h1 className="faveChat">FaveChat<span className="blue">!</span></h1>
             <span className="signOut">
               <h2 className="green">
-                {this.state.username.username}
-                <a href="#" onClick={this.signOut} className="blue">Sign Out</a>
+                {this.state.username.username}&nbsp;
+                <span onClick={this.signOut} className="blue signOutLink">Sign Out</span>
               </h2>
             </span>
           </div>
