@@ -238,7 +238,7 @@ export default class ChatRoom extends React.PureComponent {
 
           {this.renderAlertSignedOut()}
 
-          <div className="title">
+          <div className="titleChat">
             <h1 className="faveChat">FaveChat<span className="blue">!</span></h1>
             <span className="signOut">
               <h2 className="green">
